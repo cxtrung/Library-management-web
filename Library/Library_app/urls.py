@@ -29,6 +29,10 @@ path('reader/', views.reader, name='reader'),
  path('avbook/<int:pk>', views.AViewBook.as_view(), name='avbook'),
  path('aebook/<int:pk>', views.AEditView.as_view(), name='aebook'),
  path('adbookk/<int:pk>', views.ADeleteBookk.as_view(), name='adbookk'),
+ path('asearch/', views.asearch, name='asearch'),
+ path('create_user_form/', views.create_user_form, name='create_user_form'),
+ path('aluser/', views.ListUserView.as_view(), name='aluser'),
+
 
 
 ]
