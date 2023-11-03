@@ -226,3 +226,36 @@ class ListUserView(generic.ListView):
 
     def get_queryset(self):
         return User.objects.order_by('-id')
+
+class ALViewUser(DetailView):
+    model = User
+    template_name = 'dashboard/user_detail.html'
+
+def create_user(request):
+    choice = ['1', '0', 'Reader', 'Admin']
+    choice = {'choice': choice}
+    if request.method == 'POST':
+        first_name=request.POST['first_name']
+        last_name=request.POST['last_name']
+        username=request.POST['username']
+        userType=request.POST['userType']
+        email=request.POST['email']
+        password=request.POST['password']
+        password = make_password(password)
+        print("User Type")
+        print(userType)
+        if userType == "Reader":
+            a = User(first_name=first_name, last_name=last_name, username=username, email=email, password=password, is_reader=True)
+            a.save()
+            messages.success(request, 'Member was created successfully!')
+            return redirect('aluser')
+        elif userType == "Admin":
+            a = User(first_name=first_name, last_name=last_name, username=username, email=email, password=password, is_admin=True)
+            a.save()
+            messages.success(request, 'Member was created successfully!')
+            return redirect('aluser')
+        else:
+            messages.success('Member was not created')
+            return redirect('create_user_form')
+    else:
+        return redirect('create_user_form')

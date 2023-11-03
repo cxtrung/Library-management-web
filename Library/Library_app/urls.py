@@ -32,6 +32,8 @@ path('reader/', views.reader, name='reader'),
  path('asearch/', views.asearch, name='asearch'),
  path('create_user_form/', views.create_user_form, name='create_user_form'),
  path('aluser/', views.ListUserView.as_view(), name='aluser'),
+ path('create_user/', views.create_user, name='create_user'),
+ path('alvuser/<int:pk>', views.ALViewUser.as_view(), name='alvuser'),
 
 
 
