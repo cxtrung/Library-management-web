@@ -34,7 +34,8 @@ path('reader/', views.reader, name='reader'),
  path('aluser/', views.ListUserView.as_view(), name='aluser'),
  path('create_user/', views.create_user, name='create_user'),
  path('alvuser/<int:pk>', views.ALViewUser.as_view(), name='alvuser'),
-
+ path('aeuser/<int:pk>', views.AEditUser.as_view(), name='aeuser'),
+ path('aduser/<int:pk>', views.ADeleteUser.as_view(), name='aduser'),
 
 
 ]

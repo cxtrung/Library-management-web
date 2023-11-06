@@ -7,7 +7,7 @@ from .models import User, Book
 from django.contrib import messages
 from django.db.models import Sum
 from django.views.generic import CreateView, DetailView, DeleteView, UpdateView, ListView
-from .forms import BookForm 
+from .forms import BookForm, UserForm 
 from . import models
 import operator
 import itertools
@@ -230,6 +230,19 @@ class ListUserView(generic.ListView):
 class ALViewUser(DetailView):
     model = User
     template_name = 'dashboard/user_detail.html'
+
+class AEditUser(SuccessMessageMixin, UpdateView):
+    model = User
+    form_class = UserForm
+    template_name = 'dashboard/edit_user.html'
+    success_url = reverse_lazy('aluser')
+    success_message = "Data successfully updated"
+
+class ADeleteUser(SuccessMessageMixin, DeleteView):
+    model = User
+    template_name = 'dashboard/confirm_delete3.html'
+    success_url = reverse_lazy('aluser')
+    success_message = "Data successfully deleted"
 
 def create_user(request):
     choice = ['1', '0', 'Reader', 'Admin']
