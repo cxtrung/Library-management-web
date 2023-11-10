@@ -34,4 +34,16 @@ class Book(models.Model):
     def delete(self, *args, **kwargs):
         self.pdf.delete()
         self.cover.delete()
-        super().delete(*args, **kwargs)        
+        super().delete(*args, **kwargs)      
+
+class DeleteRequest(models.Model):
+    delete_request = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.delete_request
+
+class Feedback(models.Model):
+    feedback = models.CharField(max_length=100, null=True, blank=True)
+
+    def __str__(self):
+        return self.feedback  

@@ -1,9 +1,10 @@
+from datetime import date
 from django.shortcuts import redirect, render
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views import generic
 from bootstrap_modal_forms.mixins import PassRequestMixin
-from .models import User, Book
+from .models import DeleteRequest, Feedback, User, Book
 from django.contrib import messages
 from django.db.models import Sum
 from django.views.generic import CreateView, DetailView, DeleteView, UpdateView, ListView
@@ -272,3 +273,48 @@ def create_user(request):
             return redirect('create_user_form')
     else:
         return redirect('create_user_form')
+	
+class ADeleteRequest(LoginRequiredMixin,ListView):
+	model = DeleteRequest
+	template_name = 'dashboard/delete_request.html'
+	context_object_name = 'feedbacks'
+	paginate_by = 3
+
+	def get_queryset(self):
+		return DeleteRequest.objects.order_by('-id')
+
+class AFeedback(LoginRequiredMixin,ListView):
+	model = Feedback
+	template_name = 'dashboard/feedback.html'
+	context_object_name = 'feedbacks'
+	paginate_by = 3
+
+	def get_queryset(self):
+		return Feedback.objects.order_by('-id')
+
+@login_required	
+def aviewissuedbook_view(request):
+    issuedbooks=models.IssuedBook.objects.all()
+    li=[]
+    for ib in issuedbooks:
+        issdate=str(ib.issuedate.day)+'-'+str(ib.issuedate.month)+'-'+str(ib.issuedate.year)
+        expdate=str(ib.expirydate.day)+'-'+str(ib.expirydate.month)+'-'+str(ib.expirydate.year)
+        #fine calculation
+        days=(date.today()-ib.issuedate)
+        print(date.today())
+        d=days.days
+        fine=0
+        if d>15:
+            day=d-15
+            fine=day*10
+
+
+        books=list(models.Book.objects.filter(isbn=ib.isbn))
+        reader=list(models.ReaderExtra.objects.filter(enrollment=ib.enrollment))
+        i=0
+        for l in books:
+            t=(reader[i].get_name,reader[i].enrollment,books[i].name,books[i].author,issdate,expdate,fine)
+            i=i+1
+            li.append(t)
+
+    return render(request,'dashboard/viewissuedbook.html',{'li':li})

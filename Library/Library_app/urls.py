@@ -36,6 +36,8 @@ path('reader/', views.reader, name='reader'),
  path('alvuser/<int:pk>', views.ALViewUser.as_view(), name='alvuser'),
  path('aeuser/<int:pk>', views.AEditUser.as_view(), name='aeuser'),
  path('aduser/<int:pk>', views.ADeleteUser.as_view(), name='aduser'),
-
+ path('adrequest/', views.ADeleteRequest.as_view(), name='adrequest'),
+ path('afeedback/', views.AFeedback.as_view(), name='afeedback'),
+ path('aviewissuedbook_view/', views.aviewissuedbook_view.as_view(), name='aviewissuedbook_view'),
 
 ]
