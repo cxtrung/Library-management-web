@@ -70,11 +70,111 @@ def registerView(request):
 @login_required
 def reader(request):
 	return render(request, 'reader/home.html')
+@login_required
+def request_form(request):
+    return render(request, 'reader/delete_request.html')
+@login_required
+def feedback_form(request):
+    return render(request, 'publisher/send_feedback.html')
+
+@login_required
+def about(request):
+    return render(request, 'reader/about.html')
+
+@login_required
+def usearch(request):
+    #GET - fetch data from the database
+    query = request.GET['query']
+    print(type(query))
+
+    data = query
+    print(len(data))
+    if (len(data) == 0):
+        return redirect('reader')
+    else:
+        a = data
+
+        # searching for data
+        qs5 =models.Book.objects.filter(id__iexact=a).distinct()
+        qs6 =models.Book.objects.filter(id__exact=a).distinct()
+        qs7 =models.Book.objects.all().filter(id__contains=a)
+        qs8 =models.Book.objects.select_related().filter(id__contains=a).distinct()
+        qs9 =models.Book.objects.filter(id__startswith=a).distinct()
+        qs10 =models.Book.objects.filter(id__endswith=a).distinct()
+        qs11 =models.Book.objects.filter(id__istartswith=a).distinct()
+        qs12 =models.Book.objects.all().filter(id__icontains=a)
+        qs13 =models.Book.objects.filter(id__iendswith=a).distinct()
+
+        files = itertools.chain(qs5, qs6, qs7, qs8, qs9, qs10, qs11, qs12, qs13)
+
+        res = []
+        for i in files:
+            if i not in res:
+                res.append(i)
+
+        # word variable will be shown in html when user click on search button
+        word="Searched Result :"
+        print("Result")
+
+        print(res)
+        files = res
+
+        page = request.GET.get('page', 1)
+        paginator = Paginator(files, 10)
+        try:
+            files = paginator.page(page)
+        except PageNotAnInteger:
+            files = paginator.page(1)
+        except EmptyPage:
+            files = paginator.page(paginator.num_pages)
+
+        if files:
+            return render(request,'reader/result.html',{'files':files,'word':word})
+            return render(request,'reader/result.html',{'files':files,'word':word})
 
 
+@login_required
+def delete_request(request):
+    if request.method == 'POST':
+        book_id = request.POST['delete_request']
+        current_user = request.user
+        user_id = current_user.id
+        username = current_user.username
+        user_request = username + " wants the book with the id " + book_id + " to be deleted"
 
+        a = DeleteRequest(delete_request=user_request)
+        a.save()
+        messages.success(request, 'Request was sent')
+        return redirect('request_form')
+    else:
+        messages.error(request, 'Request was not sent')
+        return redirect('request_form')
 
+@login_required
+def send_feedback(request):
+    if request.method == 'POST':
+        feedback = request.POST['feedback']
+        current_user = request.user
+        user_id = current_user.id
+        username = current_user.username
+        feedback = username + " " + " says " + " " + feedback
 
+        a = Feedback(feedback=feedback)
+        a.save()
+        messages.success(request, 'Feedback was sent')
+        return redirect('feedback_form')
+    else:
+        messages.error(request, 'Feedback was not sent')
+        return redirect('feedback_form')
+
+class UBookListView(LoginRequiredMixin, ListView):
+    model = Book
+    template_name = 'reader/book_list.html'
+    context_object_name = 'books'
+    paginate_by = 2
+
+    def get_queryset(self):
+        return Book.objects.order_by('-id')
 
 
 #Admin views
