@@ -15,8 +15,13 @@ urlpatterns = [
 
 
  # Reader URL's
-path('reader/', views.reader, name='reader'),
-
+path('reader/', views.UBookListView.as_view(), name='reader'),
+path('request_form/', views.request_form, name='request_form'),
+path('delete_request/', views.delete_request, name='delete_request'),
+path('feedback_form/', views.feedback_form, name='feedback_form'),
+path('send_feedback/', views.send_feedback, name='send_feedback'),
+path('about/', views.about, name='about'),
+path('usearch/', views.usearch, name='usearch'),
 
 
  # Admin URL's
@@ -38,6 +43,5 @@ path('reader/', views.reader, name='reader'),
  path('aduser/<int:pk>', views.ADeleteUser.as_view(), name='aduser'),
  path('adrequest/', views.ADeleteRequest.as_view(), name='adrequest'),
  path('afeedback/', views.AFeedback.as_view(), name='afeedback'),
- path('aviewissuedbook_view/', views.aviewissuedbook_view.as_view(), name='aviewissuedbook_view'),
 
 ]

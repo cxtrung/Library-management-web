@@ -75,7 +75,7 @@ def request_form(request):
     return render(request, 'reader/delete_request.html')
 @login_required
 def feedback_form(request):
-    return render(request, 'publisher/send_feedback.html')
+    return render(request, 'reader/send_feedback.html')
 
 @login_required
 def about(request):
@@ -391,30 +391,3 @@ class AFeedback(LoginRequiredMixin,ListView):
 
 	def get_queryset(self):
 		return Feedback.objects.order_by('-id')
-
-@login_required	
-def aviewissuedbook_view(request):
-    issuedbooks=models.IssuedBook.objects.all()
-    li=[]
-    for ib in issuedbooks:
-        issdate=str(ib.issuedate.day)+'-'+str(ib.issuedate.month)+'-'+str(ib.issuedate.year)
-        expdate=str(ib.expirydate.day)+'-'+str(ib.expirydate.month)+'-'+str(ib.expirydate.year)
-        #fine calculation
-        days=(date.today()-ib.issuedate)
-        print(date.today())
-        d=days.days
-        fine=0
-        if d>15:
-            day=d-15
-            fine=day*10
-
-
-        books=list(models.Book.objects.filter(isbn=ib.isbn))
-        reader=list(models.ReaderExtra.objects.filter(enrollment=ib.enrollment))
-        i=0
-        for l in books:
-            t=(reader[i].get_name,reader[i].enrollment,books[i].name,books[i].author,issdate,expdate,fine)
-            i=i+1
-            li.append(t)
-
-    return render(request,'dashboard/viewissuedbook.html',{'li':li})

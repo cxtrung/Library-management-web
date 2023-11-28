@@ -49,12 +49,10 @@
                                 <tr>
                                     <td>{{ forloop.counter }}</td>
                                     <td>{{ user.username }}</td>
-                                    <td>{% if user.is_publisher == True %}
-                                      <p>Publisher</p>
-                                    {% elif user.is_admin == True %}
-                                      <p>Admin</p>
+                                    <td>{% if user.is_reader == True %}
+                                      <p>Reader</p>
                                     {% else %}
-                                    <p>Librarian</p>
+                                    <p>Admin</p>
                                       {% endif %}
                                     </td>
                                     <td>{{ user.email }}</td>
