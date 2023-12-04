@@ -17,7 +17,7 @@ urlpatterns = [
  # Reader URL's
 path('reader/', views.UBookListView.as_view(), name='reader'),
 path('request_form/', views.request_form, name='request_form'),
-path('delete_request/', views.delete_request, name='delete_request'),
+path('rent_request/', views.rent_request, name='rent_request'),
 path('feedback_form/', views.feedback_form, name='feedback_form'),
 path('send_feedback/', views.send_feedback, name='send_feedback'),
 path('about/', views.about, name='about'),
@@ -41,7 +41,7 @@ path('usearch/', views.usearch, name='usearch'),
  path('alvuser/<int:pk>', views.ALViewUser.as_view(), name='alvuser'),
  path('aeuser/<int:pk>', views.AEditUser.as_view(), name='aeuser'),
  path('aduser/<int:pk>', views.ADeleteUser.as_view(), name='aduser'),
- path('adrequest/', views.ADeleteRequest.as_view(), name='adrequest'),
+ path('arrequest/', views.ARentRequest.as_view(), name='arrequest'),
  path('afeedback/', views.AFeedback.as_view(), name='afeedback'),
 
 ]

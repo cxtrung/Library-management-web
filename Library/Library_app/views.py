@@ -4,7 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views import generic
 from bootstrap_modal_forms.mixins import PassRequestMixin
-from .models import DeleteRequest, Feedback, User, Book
+from .models import Feedback, RentRequest, User, Book
 from django.contrib import messages
 from django.db.models import Sum
 from django.views.generic import CreateView, DetailView, DeleteView, UpdateView, ListView
@@ -72,7 +72,7 @@ def reader(request):
 	return render(request, 'reader/home.html')
 @login_required
 def request_form(request):
-    return render(request, 'reader/delete_request.html')
+    return render(request, 'reader/rent_request.html')
 @login_required
 def feedback_form(request):
     return render(request, 'reader/send_feedback.html')
@@ -130,19 +130,17 @@ def usearch(request):
 
         if files:
             return render(request,'reader/result.html',{'files':files,'word':word})
-            return render(request,'reader/result.html',{'files':files,'word':word})
-
 
 @login_required
-def delete_request(request):
+def rent_request(request):
     if request.method == 'POST':
-        book_id = request.POST['delete_request']
+        book_id = request.POST['rent_request']
         current_user = request.user
         user_id = current_user.id
         username = current_user.username
-        user_request = username + " wants the book with the id " + book_id + " to be deleted"
+        user_request = username + " wants the book with the id " + book_id + " to be rented"
 
-        a = DeleteRequest(delete_request=user_request)
+        a = RentRequest(rent_request=user_request)
         a.save()
         messages.success(request, 'Request was sent')
         return redirect('request_form')
@@ -374,14 +372,14 @@ def create_user(request):
     else:
         return redirect('create_user_form')
 	
-class ADeleteRequest(LoginRequiredMixin,ListView):
-	model = DeleteRequest
-	template_name = 'dashboard/delete_request.html'
+class ARentRequest(LoginRequiredMixin,ListView):
+	model = RentRequest
+	template_name = 'dashboard/rent_request.html'
 	context_object_name = 'feedbacks'
 	paginate_by = 3
 
 	def get_queryset(self):
-		return DeleteRequest.objects.order_by('-id')
+		return RentRequest.objects.order_by('-id')
 
 class AFeedback(LoginRequiredMixin,ListView):
 	model = Feedback

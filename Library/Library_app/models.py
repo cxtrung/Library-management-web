@@ -36,11 +36,11 @@ class Book(models.Model):
         self.cover.delete()
         super().delete(*args, **kwargs)      
 
-class DeleteRequest(models.Model):
-    delete_request = models.CharField(max_length=100, null=True, blank=True)
+class RentRequest(models.Model):
+    rent_request = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
-        return self.delete_request
+        return self.rent_request
 
 class Feedback(models.Model):
     feedback = models.CharField(max_length=100, null=True, blank=True)

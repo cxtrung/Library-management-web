@@ -33,21 +33,22 @@
 
 
                      
-                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>Book ID</th>
                                 <th>Book Cover</th>
                                 <th>Book Title</th>
-                                <th>Read</th>
-                                <th>Download</th>
+                                <th>View</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
                             </tr>
                             </thead>
                             <tbody>
 
 
-                              {% if books %}
-                                {% for book in books %}
+                            	{% if books %}
+                            	  {% for book in books %}
 
                         
                                 <tr>
@@ -62,23 +63,14 @@
 
                                   
                                   <td>{{ book.title }}</td>
-                                  
-                                    <td>
-                                    {% if book.pdf %}
-                                      <a href="{{ book.pdf.url }}" class="btn btn-outline-primary" target="_blank">
-                                    View PDF</a>
-                                    {% else %}
-                                    <span class="text-muted">No PDF</span>
-                                   {% endif %}
-                                  </td>
-                                    <td>
-                                    {% if book.cover %}
-                                      <a href="{{ book.pdf.url }}" download class="btn btn-outline-success">
-                                    Download PDF</a>
-                                    {% else %}
-                                   <span class="text-muted">No PDF</span>
-                                   {% endif %}
-                                  </td>
+                                  <td>
+                <a href="{% url 'avbook' book.pk %}"><button type="button" class="btn btn-primary"> View</button></a>
+                 </td>
+                <td>
+                <a href="{% url 'aebook' book.pk %}"><button type="button" class="btn btn-warning"> Edit</button></a>
+        </td>
+        <td>
+          <a href="{% url 'adbook' book.pk %}"><button type="button" class="btn btn-danger"> Delete</button></a></td>
                                   
                                 </tr>
 
